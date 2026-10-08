@@ -1,9 +1,22 @@
+console.log(`ІНСТРУКЦІЯ З ВИКОРИСТАННЯ ФУНКЦІЇ triangle()
+Функція розв'язує прямокутний трикутник за двома заданими елементами.
+
+Синтаксис виклику:
+triangle(val1, type1, val2, type2);
+
+Допустимі типи ("types"):
+"leg" — катет
+"hypotenuse" — гіпотенуза
+"adjacent angle" — прилеглий до катета кут (у градусах)
+"opposite angle" — протилежний до катета кут (у градусах)
+"angle" — один із двох гострих кутів, коли задана гіпотенуза (у градусах)`);
+
 function triangle(val1, type1, val2, type2) {
-    // Перетворення градусів у радіани та навпаки
+    // перетворення градусів у радіани та навпаки
     const toRadians = deg => (deg * Math.PI) / 180;
     const toDegrees = rad => (rad * 180) / Math.PI;
 
-    // Перевірка на некоректні / нечислові / від'ємні значення
+    // перевірка на некоректні, нечислові, від'ємні значення
     if (typeof val1 !== "number" || typeof val2 !== "number" || isNaN(val1) || isNaN(val2) || val1 <= 0 || val2 <= 0) {
         console.log("Zero or negative input");
         return "Zero or negative input";
@@ -23,7 +36,7 @@ function triangle(val1, type1, val2, type2) {
     const has = (t) => p1.type === t || p2.type === t;
     const get = (t) => (p1.type === t ? p1.val : p2.val);
 
-    // 1. ДВА КАТЕТИ (leg + leg)
+    // два катети
     if (p1.type === "leg" && p2.type === "leg") {
         a = p1.val;
         b = p2.val;
@@ -31,7 +44,7 @@ function triangle(val1, type1, val2, type2) {
         alpha = toDegrees(Math.atan(a / b));
         beta = 90 - alpha;
     }
-    // 2. КАТЕТ ТА ГІПОТЕНУЗА (leg + hypotenuse)
+    // катет і гіпотен
     else if (has("leg") && has("hypotenuse")) {
         const leg = get("leg");
         const hyp = get("hypotenuse");
@@ -47,7 +60,7 @@ function triangle(val1, type1, val2, type2) {
         alpha = toDegrees(Math.asin(a / c));
         beta = 90 - alpha;
     }
-    // 3. КАТЕТ ТА ПРИЛЕГЛИЙ КУТ (leg + adjacent angle)
+    // катет і прилеглий кут
     else if (has("leg") && has("adjacent angle")) {
         a = get("leg");
         beta = get("adjacent angle");
@@ -61,7 +74,7 @@ function triangle(val1, type1, val2, type2) {
         c = a / Math.cos(toRadians(beta));
         b = Math.sqrt(c * c - a * a);
     }
-    // 4. КАТЕТ ТА ПРОТИЛЕЖНИЙ КУТ (leg + opposite angle)
+    // катет і протилежний кут
     else if (has("leg") && has("opposite angle")) {
         a = get("leg");
         alpha = get("opposite angle");
@@ -75,7 +88,7 @@ function triangle(val1, type1, val2, type2) {
         c = a / Math.sin(toRadians(alpha));
         b = Math.sqrt(c * c - a * a);
     }
-    // 5. ГІПОТЕНУЗА ТА ГОСТРИЙ КУТ (hypotenuse + angle)
+    // гіпотен і гостр кут
     else if (has("hypotenuse") && has("angle")) {
         c = get("hypotenuse");
         alpha = get("angle");
@@ -89,13 +102,13 @@ function triangle(val1, type1, val2, type2) {
         a = c * Math.sin(toRadians(alpha));
         b = c * Math.cos(toRadians(alpha));
     }
-    // Якщо комбінація типів некоректна/несумісна
+    // комбінація типів некоректна або несумісна
     else {
         console.log("Несумісна пара типів. Прочитайте інструкцію.");
         return "failed";
     }
 
-    // Виведення результатів
+    // виведення результатів
     console.log(`a = ${a}`);
     console.log(`b = ${b}`);
     console.log(`c = ${c}`);
